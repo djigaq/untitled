@@ -60,6 +60,14 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByUsername(email);
+        try {
+            UserDetails userDetails = userRepository.findByUsername(email);
+            if (userDetails == null) {
+                throw new UsernameNotFoundException("User not found with email: " + email);
+            }
+            return userDetails;
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
     }
 }
